@@ -42,6 +42,7 @@ Proof of Concept instructions for OIDC authentication on minikube using gangway/
 - Gangway deployed to Kubernetes
 ### Setup details
 - Generate TLS cert/key/CA for communication with dex (may also need to do same for gangway, TBD)
+  - Remember to add routes to /etc/hosts in minikube and host machine to satisfy TLS if only hostnames are listed in Subject Alternative Names
 - Pull and build dex on local host:  https://github.com/dexidp/dex/blob/master/Documentation/getting-started.md#building-the-dex-binary
 - Fill in details on dex-config.yaml (more info on that later)
 - From the root of the dex repo, run dex with the config as a parameter: `./bin/dex serve {path to dex-config.yaml}`
