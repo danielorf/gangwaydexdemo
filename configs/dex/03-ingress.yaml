@@ -8,10 +8,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - dex.${DNS_NAME}
+    - dex.gangwaydexdemo.com
     secretName: dex-tls
   rules:
-  - host: dex.${DNS_NAME}
+  - host: dex.gangwaydexdemo.com
     http:
       paths:
       - backend:
