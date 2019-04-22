@@ -52,3 +52,12 @@ Proof of Concept instructions for OIDC authentication on minikube using gangway/
 - Deploy gangway configs:  from root of this project:  `kubectl apply -f configs/gangway`
 - ???
 - Profit
+
+
+## Ingress details for non-minikube cluster
+### Ingress
+- minikube ingress as an example:  https://github.com/kubernetes/minikube/tree/master/deploy/addons/ingress
+  - Uses nodeport instead of loadbalancer
+- Lightly modified version of deployment (and copy of te rest of configs in configs/ingress)
+- `kubectl apply -f` in this order: configmao, rbac, dp, service
+- Default http back-end should now be available on worker node(s)
