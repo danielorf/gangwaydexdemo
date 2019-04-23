@@ -63,7 +63,7 @@ data:
       secret: ZXhhbXBsZS1hcHAtc2VjcmV0
     - id: gangway
       redirectURIs:
-      - http://gangway.gangwaydexdemo.com/callback
+      - http://gangwaysvc.gangway.svc.cluster.local/callback
       name: "Heptio Gangway"
       secret: ZXhhbXBsZS1hcHAtc2VjcmV0
 
