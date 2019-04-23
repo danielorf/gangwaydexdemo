@@ -33,11 +33,11 @@ data:
 
     # OAuth2 URL to start authorization flow.
     # Env var: GANGWAY_AUTHORIZE_URL
-    authorizeURL: "https://dex.gangwaydexdemo.com:5556/dex/auth"
+    authorizeURL: "https://dex.gangwaydexdemo.com/dex/auth"
 
     # OAuth2 URL to obtain access tokens.
     # Env var: GANGWAY_TOKEN_URL
-    tokenURL: "https://dex.gangwaydexdemo.com:5556/dex/token"
+    tokenURL: "https://dex.gangwaydexdemo.com/dex/token"
 
     # Endpoint that provides user profile information [optional]. Not all providers
     # will require this.
