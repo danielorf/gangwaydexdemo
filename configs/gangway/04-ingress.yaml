@@ -12,7 +12,7 @@ spec:
   #   hosts:
   #   - gangway.${DNS_NAME}
   rules:
-  - host: "gangway.example.com"
+  - host: "gangway.gangwaydexdemo.com"
     http:
       paths:
       - backend:
