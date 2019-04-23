@@ -33,11 +33,11 @@ data:
 
     # OAuth2 URL to start authorization flow.
     # Env var: GANGWAY_AUTHORIZE_URL
-    authorizeURL: "https://ldaptest.com:9556/dex/auth"
+    authorizeURL: "https://dex.gangwaydexdemo.com:9556/dex/auth"
 
     # OAuth2 URL to obtain access tokens.
     # Env var: GANGWAY_TOKEN_URL
-    tokenURL: "https://ldaptest.com:9556/dex/token"
+    tokenURL: "https://dex.gangwaydexdemo.com:9556/dex/token"
 
     # Endpoint that provides user profile information [optional]. Not all providers
     # will require this.
@@ -51,12 +51,12 @@ data:
     # Typically this also needs to be registered as part of the oauth application
     # with the oAuth provider.
     # Env var: GANGWAY_REDIRECT_URL
-    # redirectURL: "http://ldaptest.com:9555/callback"
-    redirectURL: "http://gangway.example.com/callback"
+    # redirectURL: "http://gangwaydexdemo.com:9555/callback"
+    redirectURL: "http://gangway.gangwaydexdemo.com/callback"
 
     # API client ID as indicated by the identity provider
     # Env var: GANGWAY_CLIENT_ID
-    clientID: "example-app"
+    clientID: "gangway"
 
     # API client secret as indicated by the identity provider
     # Env var: GANGWAY_CLIENT_SECRET
@@ -74,7 +74,7 @@ data:
 
     # The API server endpoint used to configure kubectl
     # Env var: GANGWAY_APISERVER_URL
-    apiServerURL: "https://192.168.99.107:8443"
+    apiServerURL: "https://k8sapi.gangwaydexdemo.com:8443"
 
     # The path to find the CA bundle for the API server. Used to configure kubectl.
     # This is typically mounted into the default location for workloads running on
