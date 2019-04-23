@@ -29,7 +29,7 @@ data:
     # The cluster name. Used in UI and kubectl config instructions.
     # Env var: GANGWAY_CLUSTER_NAME
     # clusterName: "${CLUSTER_NAME}"
-    clusterName: "gangway_test_cluster"
+    clusterName: "dorf_cluster"
 
     # OAuth2 URL to start authorization flow.
     # Env var: GANGWAY_AUTHORIZE_URL
