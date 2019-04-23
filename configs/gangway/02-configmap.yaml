@@ -38,7 +38,7 @@ data:
     # OAuth2 URL to obtain access tokens.
     # Env var: GANGWAY_TOKEN_URL
     # tokenURL: "https://dex.gangwaydexdemo.com/dex/token"
-    tokenURL: "https://dex.default.svc.cluster.local/dex/token"
+    tokenURL: "https://dex.default.svc.cluster.local:5556/dex/token"
 
     # Endpoint that provides user profile information [optional]. Not all providers
     # will require this.
