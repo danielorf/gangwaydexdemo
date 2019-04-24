@@ -33,8 +33,8 @@ spec:
           name: https
           protocol: TCP
         volumeMounts:
-        - mountPath: /etc/dex/cfg
-          name: config
+        - name: config
+          mountPath: /etc/dex/cfg
         - name: tls-dir
           mountPath: /etc/dex/tls
       volumes:
