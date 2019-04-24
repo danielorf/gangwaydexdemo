@@ -24,8 +24,8 @@ data:
     # Configuration for the HTTP endpoints.
     web:
       https: 0.0.0.0:5556
-      tlsCert: /etc/dex/tls/apiserver-kubelet-client.crt
-      tlsKey: /etc/dex/tls/apiserver-kubelet-client.key
+      tlsCert: /etc/dex/tls/kubelet.crt
+      tlsKey: /etc/dex/tls/kubelet.key
       # tlsCert: /etc/dex/tls/tls.crt
       # tlsKey: /etc/dex/tls/tls.key
 
