@@ -35,6 +35,8 @@ spec:
         volumeMounts:
         - mountPath: /etc/dex/cfg
           name: config
+        - name: tls-dir
+          mountPath: /etc/dex/tls
       volumes:
       - configMap:
           items:
@@ -42,3 +44,7 @@ spec:
             path: config.yaml
           name: dex
         name: config
+      - name: tls-dir
+        hostPath:
+          path: /etc/kubernetes/pki
+          type: Directory
