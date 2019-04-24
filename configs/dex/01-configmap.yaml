@@ -14,12 +14,12 @@ data:
     #
     # See the storage document at Documentation/storage.md for further information.
     storage:
-      # type: sqlite3
-      # config:
-      #   file: dex.db
-      type: kubernetes
+      type: sqlite3
       config:
-        inCluster: true
+        file: dex.db
+      # type: kubernetes
+      # config:
+      #   inCluster: true
 
     # Configuration for the HTTP endpoints.
     web:
