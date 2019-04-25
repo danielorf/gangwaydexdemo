@@ -24,12 +24,11 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /etc/dex/cfg
-        # - name: tls
-        #   mountPath: /etc/dex/tls
-        - name: tls
-          mountPath: /etc/dex/pki
+        - name: dex-tls
+          mountPath: "/etc/dex/pki"
+          readOnly: true
 
-        env:
+        # env:
         # - name: GITHUB_CLIENT_ID
         #   valueFrom:
         #     secretKeyRef:
@@ -47,9 +46,8 @@ spec:
           items:
           - key: config.yaml
             path: config.yaml
-      - name: tls
+      - name: dex-tls
         secret:
-          # secretName: dex.example.com.tls
           secretName: dex.gangwaydexdemo.com.tls
 ---
 kind: ConfigMap
@@ -71,8 +69,6 @@ data:
       https: 0.0.0.0:5556
       tlsCert: /etc/dex/pki/dex.crt
       tlsKey: /etc/dex/pki/dex.key
-      # tlsCert: /etc/dex/tls/tls.crt
-      # tlsKey: /etc/dex/tls/tls.key
     connectors:
     # - type: github
     #   id: github
