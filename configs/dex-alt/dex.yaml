@@ -24,11 +24,11 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /etc/dex/cfg
-        # - name: dex-tls
-        #   mountPath: "/etc/dex/pki"
-        #   readOnly: true
-        - name: tls-dir
-          mountPath: /etc/dex/pki
+        - name: dextls
+          mountPath: "/etc/dex/pki"
+          readOnly: true
+        # - name: tls-dir
+        #   mountPath: /etc/dex/pki
 
       volumes:
       - name: config
@@ -37,13 +37,13 @@ spec:
           items:
           - key: config.yaml
             path: config.yaml
-      # - name: dex-tls
-      #   secret:
-      #     secretName: dex.gangwaydexdemo.com.tls
-      - name: tls-dir
-        hostPath:
-          path: /etc/dex/pki
-          type: Directory
+      - name: dextls
+        secret:
+          secretName: dex.gangwaydexdemo.com.tls
+      # - name: tls-dir
+      #   hostPath:
+      #     path: /etc/dex/pki
+      #     type: Directory
 ---
 kind: ConfigMap
 apiVersion: v1
