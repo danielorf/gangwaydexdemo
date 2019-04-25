@@ -163,9 +163,9 @@ spec:
   type: NodePort
   ports:
   - name: gangway
-    port: 5555
+    port: 8080
     protocol: TCP
-    targetPort: 5555
+    targetPort: 8080
     nodePort: 32001
   selector:
     app: gangway
