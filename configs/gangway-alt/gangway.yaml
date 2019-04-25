@@ -101,7 +101,7 @@ data:
 
     # OAuth2 URL to start authorization flow.
     # Env var: GANGWAY_AUTHORIZE_URL
-    authorizeURL: "https://dex.gangwaydexdemo.com/dex/auth"
+    authorizeURL: "https://dex.gangwaydexdemo.com:32000/dex/auth"
 
     # OAuth2 URL to obtain access tokens.
     # Env var: GANGWAY_TOKEN_URL
@@ -121,7 +121,7 @@ data:
     # with the oAuth provider.
     # Env var: GANGWAY_REDIRECT_URL
     # redirectURL: "http://gangwaydexdemo.com:9555/callback"
-    redirectURL: "http://gangway.gangwaydexdemo.com/callback"
+    redirectURL: "http://gangway.gangwaydexdemo.com:32001/callback"
 
     # API client ID as indicated by the identity provider
     # Env var: GANGWAY_CLIENT_ID
@@ -169,12 +169,3 @@ spec:
     nodePort: 32001
   selector:
     app: gangway
-# spec:
-#   type: ClusterIP
-#   ports:
-#     - name: "http"
-#       protocol: TCP
-#       port: 80
-#       targetPort: "http"
-#   selector:
-#     app: gangway
