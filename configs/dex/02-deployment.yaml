@@ -36,7 +36,7 @@ spec:
         - name: config
           mountPath: /etc/dex/cfg
         - name: tls-dir
-          mountPath: /etc/dex/tls
+          mountPath: /etc/dex/pki
       volumes:
       - configMap:
           items:
@@ -46,5 +46,5 @@ spec:
         name: config
       - name: tls-dir
         hostPath:
-          path: /var/lib/kubelet/pki
+          path: /etc/dex/pki
           type: Directory
