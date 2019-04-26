@@ -51,7 +51,7 @@ metadata:
   name: dex
 data:
   config.yaml: |
-    issuer: https://dex.gangwaydexdemo.com:32000/dex
+    issuer: https://dex.gangwaydexdemo.com:5556/dex
     storage:
       type: sqlite3
       config:
