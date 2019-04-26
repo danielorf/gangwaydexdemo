@@ -60,6 +60,7 @@ data:
       https: 0.0.0.0:5556
       tlsCert: /etc/dex/pki/dex.crt
       tlsKey: /etc/dex/pki/dex.key
+      tlsClientCA: /etc/dex/pki/dex-ca.crt
     connectors:
     - type: mockCallback
       id: mock
