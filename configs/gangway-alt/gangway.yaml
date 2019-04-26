@@ -41,6 +41,8 @@ spec:
           volumeMounts:
             - name: gangway
               mountPath: /gangway/
+            - name: tls-dir
+              mountPath: /etc/dex/pki
           livenessProbe:
             httpGet:
               path: /
@@ -60,6 +62,10 @@ spec:
         - name: gangway
           configMap:
             name: gangway
+        - name: tls-dir
+          hostPath:
+            path: /etc/dex/pki
+            type: Directory
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -150,6 +156,10 @@ data:
     # a Kubernetes cluster and doesn't need to be set.
     # Env var: GANGWAY_CLUSTER_CA_PATH
     # cluster_ca_path: "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+
+    # The path to a root CA to trust for self signed certificates at the Oauth2 URLs
+    # Env var: GANGWAY_TRUSTED_CA_PATH
+    trustedCAPath: /etc/dex/pki/dex-ca.crt
 ---
 kind: Service
 apiVersion: v1
