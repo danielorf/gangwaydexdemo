@@ -70,7 +70,7 @@ data:
     staticClients:
     - id: gangway
       redirectURIs:
-      - http://gangway.gangwaydexdemo.com:32001/callback
+      - https://gangway.gangwaydexdemo.com:32001/callback
       name: "Heptio Gangway"
       secret: ZXhhbXBsZS1hcHAtc2VjcmV0
 

@@ -79,15 +79,18 @@ data:
     # Should Gangway serve TLS vs. plain HTTP? Default: false
     # Env var: GANGWAY_SERVE_TLS
     # serveTLS: false
+    serveTLS: true
 
     # The public cert file (including root and intermediates) to use when serving
     # TLS.
     # Env var: GANGWAY_CERT_FILE
     # certFile: /etc/gangway/tls/tls.crt
+    certFile: /etc/dex/pki/dex.crt
 
     # The private key file when serving TLS.
     # Env var: GANGWAY_KEY_FILE
     # keyFile: /etc/gangway/tls/tls.key
+    keyFile: /etc/dex/pki/dex.key
 
     # The cluster name. Used in UI and kubectl config instructions.
     # Env var: GANGWAY_CLUSTER_NAME
@@ -117,7 +120,7 @@ data:
     # with the oAuth provider.
     # Env var: GANGWAY_REDIRECT_URL
     # redirectURL: "http://gangwaydexdemo.com:9555/callback"
-    redirectURL: "http://gangway.gangwaydexdemo.com:32001/callback"
+    redirectURL: "https://gangway.gangwaydexdemo.com:32001/callback"
 
     # API client ID as indicated by the identity provider
     # Env var: GANGWAY_CLIENT_ID
