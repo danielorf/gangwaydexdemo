@@ -41,7 +41,7 @@ spec:
           volumeMounts:
             - name: gangway
               mountPath: /gangway/
-            - name: tls-dir
+            - name: dex-tls
               mountPath: /etc/dex/pki
           livenessProbe:
             httpGet:
@@ -62,7 +62,7 @@ spec:
         - name: gangway
           configMap:
             name: gangway
-        - name: tls-dir
+        - name: dex-tls
           hostPath:
             path: /etc/dex/pki
             type: Directory
@@ -148,8 +148,8 @@ data:
 
     # The API server endpoint used to configure kubectl
     # Env var: GANGWAY_APISERVER_URL
-    apiServerURL: "https://k8sapi.gangwaydexdemo.com:6443"
-    # apiServerURL: "https://kubernetes.default.svc.cluster.local:6443"
+    # apiServerURL: "https://k8sapi.gangwaydexdemo.com:6443"
+    apiServerURL: "https://kubernetes.default.svc.cluster.local:6443"
 
     # The path to find the CA bundle for the API server. Used to configure kubectl.
     # This is typically mounted into the default location for workloads running on
