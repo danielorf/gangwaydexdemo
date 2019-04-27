@@ -1,6 +1,8 @@
 # gangwaydexdemo
 Proof of Concept instructions for OIDC authentication on minikube using gangway/dex.  This tutorial uses NodePorts to access dex/gangway for the sake of simplicity in a local development environment - Ingress and Loadbalancer are recommended in production.
 
+[Jump to the Tutorial](https://github.com/danielorf/gangwaydexdemo#instructions)
+
 ## Goals
 - Provide a set of instructions to set up OpenID Connect (OIDC) authentication flow for Kubernetes independent of proprietary tools (e.g. AWS Elastic Loadbalancer) 
 - Use [dex](https://github.com/dexidp/dex) and [gangway](https://github.com/heptiolabs/gangway) for auth flow tooling
