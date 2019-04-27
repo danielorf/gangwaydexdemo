@@ -1,5 +1,5 @@
 # gangwaydexdemo
-Proof of Concept instructions for OIDC authentication on minikube using gangway/dex
+Proof of Concept instructions for OIDC authentication on minikube using gangway/dex.  This tutorial uses NodePorts to access dex/gangway for the sake of simplicity in a local development environment - Ingress and Loadbalancer are recommended in production.
 
 ## Goals
 - Provide a set of instructions to set up OpenID Connect (OIDC) authentication flow for Kubernetes independent of proprietary tools (e.g. AWS Elastic Loadbalancer) 
@@ -29,35 +29,78 @@ Proof of Concept instructions for OIDC authentication on minikube using gangway/
 ### Other
 - Api server access without kubectl proxy:  https://kubernetes.io/docs/tasks/access-application-cluster/access-cluster/#without-kubectl-proxy
 
-### Notes
-- Dex OIDC config http endlpoint:  https://{host}:{port}/dex/.well-known/openid-configuration
+
 
 ## Procedure
-(Note that this is a work in progress.  More/better detail to follow.)
-### Initial Archtecture
+### Architecture Notes
 - Kubernetes v1.14.0 (minikube)
-- Dex running on host machine (Mac)
-  - Makes early testing easier on local host
-  - Expect to deploy this to Kubernetes
-- Gangway deployed to Kubernetes
-### Setup details
-- Generate TLS cert/key/CA for communication with dex (may also need to do same for gangway, TBD)
-  - Remember to add routes to /etc/hosts in minikube and host machine to satisfy TLS if only hostnames are listed in Subject Alternative Names
-- Pull and build dex on local host:  https://github.com/dexidp/dex/blob/master/Documentation/getting-started.md#building-the-dex-binary
-- Fill in details on dex-config.yaml (more info on that later)
-- From the root of the dex repo, run dex with the config as a parameter: `./bin/dex serve {path to dex-config.yaml}`
-- Check OIDC config with `curl -k https://{dex hostname}:{dex port}/dex/.well-known/openid-configuration`
-- Start minikube cluster with OIDC flags:  `minikube start --extra-config=apiserver.oidc-issuer-url=http://{dex hostname}:{dex port}/dex --extra-config=apiserver.oidc-client-id=example-app --extra-config=apiserver.oidc-username-claim=sub --extra-config=apiserver.oidc-groups-claim=groups`
-- Fill in details on gangway configs (more info on that later)
-- Deploy gangway configs:  from root of this project:  `kubectl apply -f configs/gangway`
-- ???
-- Profit
+- Dex deployed to Kubernetes with port:nodeport of 5556:32000
+- Gangway deployed to Kubernetes with port:nodeport of 8080:32001
 
+### Other Important Notes
+- The instructions and configs assume that dex and gangway are reachable through these hostnames:
+    - dex hostname:  dex.gangwaydexdemo.com
+    - gangway hostname:  gangway.gangwaydexdemo.com
+- dex and gangway services are available via nodeports.  In a production environment, ingress and loadbalancer would be recommended instead.
+- dex OIDC config http endlpoint:  https://dex.gangwaydexdemo.com:32000/dex/.well-known/openid-configuration
 
-## Ingress details for non-minikube cluster
-### Ingress
-- minikube ingress as an example:  https://github.com/kubernetes/minikube/tree/master/deploy/addons/ingress
-  - Uses nodeport instead of loadbalancer
-- Lightly modified version of deployment (and copy of te rest of configs in configs/ingress)
-- `kubectl apply -f` in this order: configmao, rbac, dp, service
-- Default http back-end should now be available on worker node(s)
+### Instructions
+1. Deploy minikube: `minikube start`
+2. Generate certs to match hostnames of dex and gangway and install on minikube
+    - If you choose to generate your own certs:
+        - In ./certs/gencrt.sh, modify alt_names to match desired dex and gangway hostames.  It is currently configured for the hostnames mentioned above.
+        - Rename TLS cert to dex.crt, key to dex.key and CA cert to dex-ca.crt
+    - Otherwise, example certs are included in ./certs
+    - SSH into minikube (`minikube ssh`) and place all 3 in /etc/dex/pki
+3. /etc/hosts modifications
+    - On minikube and dev machine, add entries to /etc/hosts to point chosen dex/gangway hostnames (above) to the minikube IP address
+    - On the dev machine only, add entry to point kubernetes.default.svc.cluster.local to the kube-apiserver address which can be found with `echo "https://$(minikube ip):8443"`.
+4. Apply dex config `kubectl apply -f configs/dex.yaml`
+5. Apply gangway configs and generate secret:
+    - `kubectl apply -f configs/gangway-ns.yaml`
+    - `kubectl -n gangway create secret generic gangway-key --from-literal=sesssionkey=$(openssl rand -base64 32)`
+    - `kubectl apply -f configs/gangway.yaml`
+6. Modify kube-apiserver parameters to direct it to dex
+    - ssh into master node
+    - `sudo vim /etc/kubernetes/manifests/kube-apiserver.yaml`
+    - Add the following to spec.containers.command:
+        ```
+        - --oidc-issuer-url=https://dex.gangwaydexdemo.com:32000/dex
+        - --oidc-client-id=gangway
+        - --oidc-ca-file=/etc/dex/pki/dex-ca.crt
+        - --oidc-username-claim=email
+        - --oidc-groups-claim=groups
+        ```
+    - Add the following to spec.containers.volumeMounts:
+        ```
+        - mountPath: /etc/dex/pki
+        name: dex-certs
+        readOnly: true
+        ```
+    - Add the following to spec.volumes:
+        ```
+        - hostPath:
+            path: /etc/dex/pki
+            type: DirectoryOrCreate
+            name: dex-certs
+        ```
+    - The kube-apiserver container should restart after modification.  Ensure that is does by running `docker ps` from the master node to check if the container is new.
+7. Modify coredns configmap to map external hostnames internally
+    - `kubectl edit cm coredns -n kube-system`
+    - Add the following to data.Corefile..:53 after 'health'
+        - `rewrite name gangway.gangwaydexdemo.com gangwaysvc.gangway.svc.cluster.local`
+        - `rewrite name dex.gangwaydexdemo.com dex.default.svc.cluster.local`
+    - Restart all coredns pods
+        - `kubectl delete pod coredns-XXXXXXX -n kube-system`
+8. Add a rolebinding for the new user:
+    - `kubectl create rolebinding test-admin-binding --clusterrole=admin --user=admin@example.com --namespace=kube-system`
+    - Note that this command gives admin access to the user, not recommended for production use.
+9. Begin the dex/gangway login process.  It's recommended that you back up and delete your current KUBECONFIG before running the `kubectl` commands below as they will overwrite it.
+    - Visit http://gangway.gangwaydexdemo.com:32001
+        - Note that login occurs in a dex portal which is https
+    - Click 'Sign In' button
+    - Click 'Log in with Email'
+    - Enter credentials:  admin@example.com/password
+    - Click 'Grant Access'
+    - Follow intructions after the line "Once kubectl is installed, you may execute the following:" to add the token to your KUBECONFIG
+    - Test access with `kubectl get pods -n kube-system`
